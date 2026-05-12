@@ -1,0 +1,28 @@
+services:
+  paiement:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: paiement_service
+    env_file:
+      - ./.env
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_ADDITIONAL_LOCATION: /app/config/
+    ports:
+      - "${PAYMENT_SERVICE_PORT}:${SERVER_PORT}"
+    networks:
+      - fitunity-network
+    restart: unless-stopped
+    volumes:
+      - ./src/main/resources/application-docker.properties:/app/config/application-docker.properties:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:${SERVER_PORT}/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  fitunity-network:
+    external: true
+    driver: bridge

@@ -1,0 +1,14 @@
+target/
+.git/
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+**/node_modules/
+**/build/
+**/dist/
+**/*.log
+
+### env files ###
+.env    
